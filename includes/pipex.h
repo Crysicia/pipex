@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:56:58 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/26 22:01:40 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/26 22:19:33 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ typedef struct s_pipex
 	char ***commands;
 	t_pipes *pipes;
 }				t_pipex;
+
+t_pipex *init_pipex(int argc, char *argv[]);
+void display_pipex(t_pipex *pipex);
 
 #endif

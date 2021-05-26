@@ -6,7 +6,8 @@ LIBS			= -Llibft -lft
 LIBFT 			= libft/libft.a
 NAME			= pipex
 
-RAW_SRCS		= main.c
+RAW_SRCS		= main.c \
+				  parsing.c
 SRCS			= $(addprefix srcs/, $(RAW_SRCS))
 OBJS 			= $(SRCS:.c=.o)
 
