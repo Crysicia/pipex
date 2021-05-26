@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 22:18:30 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/26 22:18:46 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 00:01:08 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_pipex *init_pipex(int argc, char *argv[])
 	pipex->input_fd = open(argv[1], O_RDONLY);
 	pipex->output_fd = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	pipex->commands = init_commands(argc, argv);
+	pipex->commands_count = argc - 3;
 	pipex->pipes = init_pipes();
 	return (pipex);
 }
@@ -83,13 +84,14 @@ t_pipex *init_pipex(int argc, char *argv[])
 #include <stdio.h>
 void display_pipex(t_pipex *pipex)
 {
-	printf("---------------\nInput fd: %d\nOutput fd: %d\nPrevious pipe: [%d, %d]\nCurrent pipe: [%d, %d]\nCommands:\n",
+	printf("---------------\nInput fd: %d\nOutput fd: %d\nPrevious pipe: [%d, %d]\nCurrent pipe: [%d, %d]\nCommands count: %d\nCommands:\n",
 			pipex->input_fd,
 			pipex->output_fd,
 			pipex->pipes->previous[0],
 			pipex->pipes->previous[1],
 			pipex->pipes->current[0],
-			pipex->pipes->current[1]
+			pipex->pipes->current[1],
+			pipex->commands_count
 		);
 	for (int i = 0; pipex->commands[i]; i++)
 	{
