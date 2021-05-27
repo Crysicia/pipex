@@ -6,11 +6,18 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 22:18:30 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 03:03:01 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 03:13:00 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	is_path(char *path)
+{
+	if (!path)
+		return (0);
+	return (!!ft_strchr(path, '/'));
+}
 
 char	*full_path(char *buffer, char *current_path, char *executable)
 {
@@ -48,6 +55,8 @@ char	**parse_command(char *command_line, char **path)
 	command = ft_split(command_line, ' ');
 	if (!command)
 		return (NULL);
+	if (is_path(command[0]))
+		return (command);
 	command_path = get_command_path(command[0], path);
 	if (command_path)
 	{
