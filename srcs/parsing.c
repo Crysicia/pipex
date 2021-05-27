@@ -6,28 +6,62 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 22:18:30 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 01:57:24 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:16:16 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void *free_commands(char ***commands, char **path)
+void close_safe(int *fd)
 {
-	(void)commands;
-	(void)path;
+	if (*fd == -1)
+		return ;
+	close(*fd);
+	*fd = -1;
+}
+
+void free_split(char **array)
+{
+	int i;
+
+	i = 0;
+	while (array && array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+void *free_commands(char ***commands, char **path, int size)
+{
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		free_split(commands[i]);
+		i++;
+	}
+	free(commands);
+	free_split(path);
 	return (NULL);
 }
 
 void *free_pipes(t_pipes *pipes)
 {
-	(void)pipes;
+	free(pipes);
 	return (NULL);
 }
 
 void free_pipex(t_pipex *pipex)
 {
-	(void)pipex;
+	free_commands(pipex->commands, NULL, pipex->commands_count);
+	close_safe(&pipex->input_fd);
+	close_safe(&pipex->output_fd);
+	close_all_pipes(pipex);
+	free_pipes(pipex->pipes);
+	free(pipex);
 }
 
 t_pipes *init_pipes(void)
@@ -50,10 +84,7 @@ char **init_path(char *envp[])
 	while (envp[i])
 	{
 		if (!ft_strncmp("PATH=", envp[i], 5))
-		{
-			printf("Path: [%s]\n", &envp[i][5]);
 			return (ft_split(&envp[i][5], ':'));
-		}
 		i++;
 	}
 	return (NULL);
@@ -74,12 +105,12 @@ char *get_command_path(char *command, char **path)
 	int fd;
 
 	i = 0;
-	while (path[i])
+	while (path && path[i])
 	{
 		fd = open(full_path(buffer, path[i], command), O_RDONLY);
 		if (fd != -1)
 		{
-			close(fd);
+			close_safe(&fd);
 			return (ft_strdup(buffer));
 		}
 		i++;
@@ -110,20 +141,20 @@ char ***init_commands(int argc, char *argv[], char *envp[])
 	char ***commands;
 	int i;
 
+	i = 0;
 	commands = malloc(sizeof(char **) * (argc - 2));
 	if (!commands)
 		return (NULL);
 	path = init_path(envp);
-	i = 0;
 	while ((i + 2) < (argc - 1))
 	{
 		commands[i] = parse_command(argv[i + 2], path);
 		if (!commands[i])
-			return (free_commands(commands, path));
+			return (free_commands(commands, path, i));
 		i++;
 	}
 	commands[i] = NULL;
-	// ft_free_matrix(path, );
+	free_split(path);
 	return (commands);
 }
 

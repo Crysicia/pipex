@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:56:58 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 01:33:30 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:15:42 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void close_all_pipes(t_pipex *pipex);
 void close_relevant_pipes(t_pipex *pipex, int placement);
 int apply_pipes(t_pipex *pipex, int placement);
 int apply_redirections(t_pipex *pipex, int placement);
-
+void free_pipex(t_pipex *pipex);
+void close_safe(int *fd);
 #endif
