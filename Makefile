@@ -1,9 +1,7 @@
 CC				= gcc
 CFLAGS 			= -g -Wall -Wextra -Werror
 RM 				= rm -f
-HEADERS 		= -I./includes -I./libft
-LIBS			= -Llibft -lft
-LIBFT 			= libft/libft.a
+HEADERS 		= -I./includes
 NAME			= pipex
 
 RAW_SRCS		= main.c \
@@ -12,7 +10,10 @@ RAW_SRCS		= main.c \
 				  execution.c \
 				  pipes_and_redirections.c \
 				  free.c \
-				  init.c
+				  init.c \
+				  lib_split.c \
+				  lib_strings.c \
+				  lib_utils.c
 SRCS			= $(addprefix srcs/, $(RAW_SRCS))
 OBJS 			= $(SRCS:.c=.o)
 
@@ -25,23 +26,18 @@ GREEN			= "\e[32m"
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
+$(NAME): $(OBJS)
 	@echo $(GREEN)"Compiling pipex executable ..."$(RST)
-	@$(CC) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(OBJS) -o $(NAME)
 	@echo $(GREEN)"pipex is ready !\nEnter \"./pipex\" for execution."$(RST)
-
-$(LIBFT):
-	@echo $(GREEN)"Compiling libft ..."$(RST)
-	@$(MAKE) bonus -C libft
 
 clean:
 	@echo $(RED)"Removing objects and librairies ..."$(RST)
 	@$(RM) $(OBJS)
-	@$(MAKE) fclean -C libft
 
 fclean: clean
 	@echo $(RED)"Removing pipex..."$(RST)
-	@$(RM) $(NAME) $(LIBFT)
+	@$(RM) $(NAME)
 
 re: fclean all
 

@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:56:58 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 03:08:09 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 03:25:56 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
-# include "libft.h"
 
 # define PIPE_READ 0
 # define PIPE_WRITE 1
@@ -62,4 +61,17 @@ t_pipex	*init_pipex(int argc, char *argv[], char *envp[]);
 char	**parse_command(char *command_line, char **path);
 void	swap_pipes(t_pipex *pipex);
 
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void	ft_putstr_fd(char *s, int fd);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
+size_t	ft_strlen(const char *s);
+
+char	**ft_split(char const *s, char c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	*ft_free_matrix(void **matrix, size_t size);
 #endif

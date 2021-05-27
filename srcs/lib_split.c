@@ -1,16 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   lib_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/10 13:18:55 by lpassera          #+#    #+#             */
-/*   Updated: 2021/04/07 14:00:48 by lpassera         ###   ########.fr       */
+/*   Created: 2021/05/27 03:21:27 by lpassera          #+#    #+#             */
+/*   Updated: 2021/05/27 03:21:41 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "pipex.h"
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	sub_len;
+	char	*str;
+
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	sub_len = ft_strlen(&s[start]);
+	if (sub_len > len)
+		sub_len = len;
+	str = malloc((sub_len + 1) * sizeof(char));
+	if (str)
+		ft_strlcpy(str, &s[start], sub_len + 1);
+	return (str);
+}
+
+void	*ft_free_matrix(void **matrix, size_t size)
+{
+	size_t	index;
+
+	index = 0;
+	while (index < size)
+	{
+		free(matrix[index]);
+		index++;
+	}
+	free(matrix);
+	return (NULL);
+}
 
 static size_t	ft_count_words(char const *str, char sep)
 {
