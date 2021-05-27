@@ -10,7 +10,9 @@ RAW_SRCS		= main.c \
 				  parsing.c \
 				  error.c \
 				  execution.c \
-				  pipes_and_redirections.c
+				  pipes_and_redirections.c \
+				  free.c \
+				  init.c
 SRCS			= $(addprefix srcs/, $(RAW_SRCS))
 OBJS 			= $(SRCS:.c=.o)
 

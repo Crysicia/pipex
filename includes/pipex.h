@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:56:58 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 02:30:14 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 03:08:09 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 # include <fcntl.h>
 # include <limits.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include <unistd.h>
 # include "libft.h"
-
-# include <stdio.h>
-# include <sys/wait.h>
 
 # define PIPE_READ 0
 # define PIPE_WRITE 1
@@ -31,28 +29,37 @@
 
 typedef struct s_pipes
 {
-	int previous[2];
-	int current[2];
+	int	previous[2];
+	int	current[2];
 }				t_pipes;
 
 typedef struct s_pipex
 {
-	int input_fd;
-	int output_fd;
-	char ***commands;
-	int commands_count;
-	t_pipes *pipes;
+	int		input_fd;
+	int		output_fd;
+	char	***commands;
+	int		commands_count;
+	t_pipes	*pipes;
 }				t_pipex;
 
-t_pipex *init_pipex(int argc, char *argv[], char *envp[]);
-void display_pipex(t_pipex *pipex);
-void display_error(char *message);
-void execute_every_commands(t_pipex *pipex, char *envp[]);
-void swap_pipes(t_pipex *pipex);
-void close_all_pipes(t_pipex *pipex);
-void close_relevant_pipes(t_pipex *pipex, int placement);
-void apply_pipes(t_pipex *pipex, int placement);
-void apply_redirections(t_pipex *pipex, int placement);
-void free_pipex(t_pipex *pipex);
-void close_safe(int *fd);
+void	apply_pipes(t_pipex *pipex, int placement);
+void	apply_redirections(t_pipex *pipex, int placement);
+void	close_all_pipes(t_pipex *pipex);
+void	close_safe(int *fd);
+void	display_pipex(t_pipex *pipex);
+void	display_error(char *message);
+void	execute_every_commands(t_pipex *pipex, char *envp[]);
+void	free_split(char **array);
+void	free_pipex(t_pipex *pipex);
+void	*free_pipes(t_pipes *pipes);
+void	*free_commands(char ***commands, char **path, int size);
+char	*full_path(char *buffer, char *current_path, char *executable);
+char	*get_command_path(char *command, char **path);
+char	***init_commands(int argc, char *argv[], char *envp[]);
+char	**init_path(char *envp[]);
+t_pipes	*init_pipes(void);
+t_pipex	*init_pipex(int argc, char *argv[], char *envp[]);
+char	**parse_command(char *command_line, char **path);
+void	swap_pipes(t_pipex *pipex);
+
 #endif
