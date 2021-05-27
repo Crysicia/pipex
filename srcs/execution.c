@@ -6,11 +6,18 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 01:19:13 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 01:22:53 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:40:29 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void clean_exit(t_pipex *pipex, char *message, int code)
+{
+	display_error(message);
+	free_pipex(pipex);
+	exit(code);
+}
 
 int execute_command(int i, t_pipex *pipex, char *envp[], int placement)
 {
@@ -21,7 +28,7 @@ int execute_command(int i, t_pipex *pipex, char *envp[], int placement)
 	command = pipex->commands[i];
 	pid = fork();
 	if (pid < 0)
-		display_error("fork");
+		clean_exit(pipex, "could not fork", 2);
 	else if (pid == 0)
 	{
 		apply_pipes(pipex, placement);
@@ -29,12 +36,10 @@ int execute_command(int i, t_pipex *pipex, char *envp[], int placement)
 		close_all_pipes(pipex);
 		execve(command[0], command, envp);
 		display_error(command[0]);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
+		free_pipex(pipex);
 		exit(1);
-	}
-	else
-	{
-		close_relevant_pipes(pipex, placement);
-		// wait(NULL);
 	}
 	return (0);
 }

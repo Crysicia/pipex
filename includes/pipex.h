@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 20:56:58 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 02:15:42 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:30:14 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void execute_every_commands(t_pipex *pipex, char *envp[]);
 void swap_pipes(t_pipex *pipex);
 void close_all_pipes(t_pipex *pipex);
 void close_relevant_pipes(t_pipex *pipex, int placement);
-int apply_pipes(t_pipex *pipex, int placement);
-int apply_redirections(t_pipex *pipex, int placement);
+void apply_pipes(t_pipex *pipex, int placement);
+void apply_redirections(t_pipex *pipex, int placement);
 void free_pipex(t_pipex *pipex);
 void close_safe(int *fd);
 #endif

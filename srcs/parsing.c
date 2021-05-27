@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 22:18:30 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 02:16:16 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:43:23 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,11 @@ t_pipex *init_pipex(int argc, char *argv[], char *envp[])
 	if (!pipex)
 		return (NULL);
 	pipex->input_fd = open(argv[1], O_RDONLY);
+	if (pipex->input_fd == -1)
+		display_error(argv[1]);
 	pipex->output_fd = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (pipex->output_fd == -1)
+		display_error(argv[argc - 1]);
 	pipex->commands = init_commands(argc, argv, envp);
 	pipex->commands_count = argc - 3;
 	pipex->pipes = init_pipes();

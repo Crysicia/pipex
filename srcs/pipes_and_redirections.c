@@ -6,7 +6,7 @@
 /*   By: lpassera <lpassera@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 01:22:34 by lpassera          #+#    #+#             */
-/*   Updated: 2021/05/27 02:12:53 by lpassera         ###   ########.fr       */
+/*   Updated: 2021/05/27 02:40:49 by lpassera         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,26 +29,15 @@ void close_all_pipes(t_pipex *pipex)
 	close_safe(&pipex->pipes->current[PIPE_WRITE]);
 }
 
-void close_relevant_pipes(t_pipex *pipex, int placement)
-{
-	if (placement == FIRST_COMMAND || placement == MIDDLE_COMMAND)
-		close_safe(&pipex->pipes->current[PIPE_WRITE]);
-	else if (placement == LAST_COMMAND)
-		close_safe(&pipex->pipes->current[PIPE_READ]);
-	if (placement == MIDDLE_COMMAND)
-		close_safe(&pipex->pipes->previous[PIPE_READ]);
-}
-
-int apply_pipes(t_pipex *pipex, int placement)
+void apply_pipes(t_pipex *pipex, int placement)
 {
 	if (placement == FIRST_COMMAND || placement == MIDDLE_COMMAND)
 		dup2(pipex->pipes->current[PIPE_WRITE], STDOUT_FILENO);
 	if (placement == MIDDLE_COMMAND || placement == LAST_COMMAND)
 		dup2(pipex->pipes->previous[PIPE_READ], STDIN_FILENO);
-	return (0);
 }
 
-int apply_redirections(t_pipex *pipex, int placement)
+void apply_redirections(t_pipex *pipex, int placement)
 {
 	if (placement == FIRST_COMMAND)
 	{
@@ -60,5 +49,4 @@ int apply_redirections(t_pipex *pipex, int placement)
 		dup2(pipex->output_fd, STDOUT_FILENO);
 		close_safe(&pipex->output_fd);
 	}
-	return (0);
 }
